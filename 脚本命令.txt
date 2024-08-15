@@ -1,0 +1,17 @@
+# 预处理kitti数据集
+cd LoGoNet-train/detection
+python -m al3d_det.datasets.kitti.kitti_dataset create_kitti_infos /home/yxm/projects/LoGoNet-train/detection/tools/cfgs/det_dataset_cfgs/kitti_dataset_mm.yaml
+
+# 执行训练
+cd LoGoNet-train/detection/tools
+bash scripts/dist_train.sh 0 1 --cfg_file cfgs/det_model_cfgs/kitti/LoGoNet-kitti.yaml
+
+# 测试
+python test.py --cfg_file cfgs/det_model_cfgs/kitti/LoGoNet-kitti.yaml --batch_size 1 --ckpt /home/yxm/projects/LoGoNet_train/detection/output/det_model_cfgs/kitti/LoGoNet-kitti/default/ckpt/checkpoint_epoch_30.pth
+
+# 可视化
+python visualize.py --cfg_file cfgs/det_model_cfgs/kitti/LoGoNet-kitti.yaml --ckpt /home/yxm/projects/LoGoNet_train/detection/output/det_model_cfgs/kitti/LoGoNet-kitti/default/ckpt/checkpoint_epoch_50.pth
+
+#预测
+cd LoGoNet-train/detection/predict
+python predict.py --cfg_file ../tools/cfgs/det_model_cfgs/kitti/LoGoNet-kitti.yaml --batch_size 1 --ckpt /home/yxm/projects/LoGoNet_train/detection/output/det_model_cfgs/kitti/LoGoNet-kitti/default/ckpt/checkpoint_epoch_30.pth
